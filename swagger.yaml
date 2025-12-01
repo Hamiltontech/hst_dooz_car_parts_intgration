@@ -1,0 +1,1193 @@
+openapi: 3.0.1
+info:
+  title: Odoo CSMENA HR Integration API
+  description: API for accessing HR, Projects, Tasks, and Assignments data from Odoo
+  version: 1.0.0
+servers:
+  - url: https://csmena-stage02-20189466.dev.odoo.com/
+    description: staging server
+  - url: https://csmena.odoo.com
+    description: Production server
+    
+tags:
+  - name: Employees
+    description: Operations related to employees
+  - name: Assignments
+    description: Operations related to employee assignments
+  - name: Projects
+    description: Operations related to projects
+  - name: Tasks
+    description: Operations related to tasks
+  - name: Departments
+    description: Operations related to departments
+  - name: Jobs
+    description: Operations related to job positions
+  - name: Payroll
+    description: Operations related to payroll & attendance.
+
+paths:
+  /api/v1/employees/details:
+    get:
+      tags: [Employees]
+      summary: Get detailed employee information
+      description: Returns comprehensive details about all employees
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EmployeeDetails'
+
+  /api/v1/employees:
+    get:
+      tags: [Employees]
+      summary: Get employee information with active assignments
+      description: Returns employee information including their active assignments
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EmployeeWithAssignments'
+
+  /api/v1/Assignments:
+    get:
+      tags: [Assignments]
+      summary: Get all assignments
+      description: Returns information about all assignments
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Assignment'
+
+  /api/v1/projects:
+    get:
+      tags: [Projects]
+      summary: Get all projects
+      description: Returns information about all projects including their tasks
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Project'
+
+  /api/v1/tasks:
+    get:
+      tags: [Tasks]
+      summary: Get all tasks
+      description: Returns information about all tasks
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+
+  /api/v1/jobs:
+    get:
+      tags: [Jobs]
+      summary: Get all job positions
+      description: Returns information about all job positions
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job'
+
+  /api/v1/departments:
+    get:
+      tags: [Departments]
+      summary: Get all departments
+      description: Returns information about all departments
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Department'
+
+  /api/v1/assignment/create:
+    post:
+      tags: [Assignments]
+      summary: Create a new assignment
+      description: Creates a new employee assignment
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignmentInput'
+      responses:
+        '200':
+          description: Assignment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    $ref: '#/components/schemas/Assignment'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Assignment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/assignment/{assignment_id}/update:
+    put:
+      tags: [Assignments]
+      summary: Update an assignment
+      description: Updates an existing assignment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: assignment_id
+          in: path
+          description: ID of the assignment to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignmentInput'
+      responses:
+        '200':
+          description: Assignment updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    $ref: '#/components/schemas/Assignment'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Assignment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /api/v1/payroll-lookups:
+    get:
+      tags: [Payroll]
+      summary: Lookup for payroll endpoint
+      description: Returns information about the payroll endpoints
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: type
+          in: query
+          description: type of the lookup values requested
+          required: true
+          schema:
+            type: string
+            # default: all
+            enum:
+              - work_entry
+              - allowance
+              - deduction
+              - salary_structure
+              - time_off
+              - shift
+              - all
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    $ref: '#/components/schemas/PayrollLookups'
+      
+  /api/v1/schedule/upsert:
+    post:
+      tags: [Payroll]
+      summary: Schedule a timeslot
+      description: Records a scheduled timeslot where an employee works on a project
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleInput'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    $ref: '#/components/schemas/Schedule'
+      
+  /api/v1/attendance/create:
+    post:
+      tags: [Payroll]
+      summary: Record the attendence of an employee
+      description: Creates a record of when an employee had checked-in & checked-out
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendanceInput'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    $ref: '#/components/schemas/Attendance'
+
+  /api/v1/work-entry/batch:
+    post:
+      summary: Create multiple work entries with benefits
+      description: |
+        Creates multiple work entries for an employee and optionally attaches fixed allowances/deductions.
+        All work entries in the batch will have the same effective_date if provided.
+      operationId: createWorkEntryBatch
+      tags:
+        - Work Entries
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkEntryBatchRequest"
+            examples:
+              jordan_employee:
+                summary: Jordan Employee Example
+                value:
+                  employee_id: 10000
+                  effective_date: "2025-10-25"
+                  attendance:
+                    - start: "2025-10-25 23:00:00"
+                      end: "2025-10-26 09:00:00"
+                      workentry_type_id: 1
+                    - start: "2025-10-26 23:00:00"
+                      end: "2025-10-27 09:00:00"
+                      workentry_type_id: 1
+                  work_entry_allowance:
+                    - id: 1
+                      factor: 1.5
+                    - id: 2
+                      factor: 1.0
+                  work_entry_deduction:
+                    - id: 5
+                      factor: 2.0
+      
+      responses:
+        "200":
+          description: Work entries created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkEntryBatchResponse"
+              examples:
+                success_response:
+                  summary: Successful Response
+                  value:
+                    status: "success"
+                    message:
+                      employee_id: 10000
+                      entries:
+                        - id: 12345
+                          date_start: "2025-10-25 20:00:00"
+                          date_stop: "2025-10-26 06:00:00"
+                          work_entry_type_id: 1
+                          effective_date: "2025-10-25"
+                          benefits:
+                            - id: 1
+                              name: "Overtime Allowance"
+                              classification: "allowance"
+                              factor: 1.5
+                              calculated_amount: 150.0
+                              employee_hours: true
+                              employee_hourly_rate: 25.0
+                              base_amount: 100.0
+                            - id: 5
+                              name: "Tax Deduction"
+                              classification: "deduction"
+                              factor: 2.0
+                              calculated_amount: 200.0
+                              employee_hours: false
+                              base_amount: 100.0
+                          total_allowances: 150.0
+                          total_deductions: 200.0
+                          net_benefit: -50.0
+                        - id: 12346
+                          date_start: "2025-10-26 20:00:00"
+                          date_stop: "2025-10-27 06:00:00"
+                          work_entry_type_id: 1
+                          effective_date: "2025-10-25"
+        "400":
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                missing_employee:
+                  summary: Missing Employee ID
+                  value:
+                    status: "error"
+                    message: "Missing employee_id"
+                invalid_datetime:
+                  summary: Invalid DateTime Format
+                  value:
+                    status: "error"
+                    message: "Invalid datetime format in attendance item (use YYYY-MM-DD HH:MM:SS): time data 'invalid-date' does not match format '%Y-%m-%d %H:%M:%S'"
+                invalid_effective_date:
+                  summary: Invalid Effective Date
+                  value:
+                    status: "error"
+                    message: "Invalid effective_date format. Use YYYY-MM-DD format"
+                unsupported_country:
+                  summary: Unsupported Country
+                  value:
+                    status: "error"
+                    message: "Unsupported country: United States (US). Supported countries: Jordan (JO), Saudi Arabia (SA)"
+        "404":
+          description: Not Found - Employee or work entry type not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                employee_not_found:
+                  summary: Employee Not Found
+                  value:
+                    status: "error"
+                    message: "Employee with ID 99999 not found"
+                work_entry_type_not_found:
+                  summary: Work Entry Type Not Found
+                  value:
+                    status: "error"
+                    message: "workentry_type_id 999 not found"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                server_error:
+                  summary: Server Error
+                  value:
+                    status: "error"
+                    message: "Internal server error occurred"
+  
+  /api/v1/shifts/upsert:
+    post:
+      tags: [Payroll]
+      summary: Create a shift
+      description: Creates a record of a shift for a project
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShiftInput'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shift"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Available authorizations - Bearer token
+      
+  schemas:
+    EmployeeDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: John Doe
+        active:
+          type: boolean
+          example: true
+        department_id:
+          type: array
+          items:
+            type: integer
+          example: [1, "IT Department"]
+        # Include all other employee fields from your implementation
+        # This is a simplified version - you should include all relevant fields
+
+    EmployeeWithAssignments:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: John Doe
+        hrid:
+          type: string
+          example: EMP001
+        department:
+          type: string
+          example: IT
+        job_title:
+          type: string
+          example: Software Developer
+        active_assignment:
+          type: array
+          items:
+            $ref: '#/components/schemas/Assignment'
+    WorkEntryBatchRequest:
+      type: object
+      required:
+        - employee_id
+        - attendance
+      properties:
+        employee_id:
+          type: integer
+          description: ID of the employee for whom work entries are being created
+          example: 10000
+        effective_date:
+          type: string
+          format: date
+          description: |
+            Optional date used for reporting purposes. 
+            If provided, this date will be applied to all work entries created in this batch.
+            Format: YYYY-MM-DD
+          example: "2025-10-25"
+        attendance:
+          type: array
+          description: Array of work entry attendance records
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/AttendanceItem"
+        work_entry_allowance:
+          type: array
+          description: |
+            Array of allowance benefits to attach to the first work entry.
+            Supports both legacy format (array of IDs) and new format (array of objects with factors).
+          items:
+            oneOf:
+              - type: integer
+                description: Legacy format - just the benefit ID
+                example: 1
+              - $ref: "#/components/schemas/BenefitFactor"
+          example: [1, { "id": 2, "factor": 1.5 }]
+        work_entry_deduction:
+          type: array
+          description: |
+            Array of deduction benefits to attach to the first work entry.
+            Supports both legacy format (array of IDs) and new format (array of objects with factors).
+          items:
+            oneOf:
+              - type: integer
+                description: Legacy format - just the benefit ID
+                example: 5
+              - $ref: "#/components/schemas/BenefitFactor"
+          example: [5, { "id": 6, "factor": 2.0 }]
+
+    AttendanceItem:
+      type: object
+      required:
+        - start
+        - end
+        - workentry_type_id
+      properties:
+        start:
+          type: string
+          format: date-time
+          description: |
+            Start time of the work entry in the employee's local timezone.
+            Format: YYYY-MM-DD HH:MM:SS
+            The API will automatically convert this to UTC based on the employee's company country.
+          example: "2025-10-25 23:00:00"
+        end:
+          type: string
+          format: date-time
+          description: |
+            End time of the work entry in the employee's local timezone.
+            Format: YYYY-MM-DD HH:MM:SS
+            Must be after the start time.
+            The API will automatically convert this to UTC based on the employee's company country.
+          example: "2025-10-26 09:00:00"
+        workentry_type_id:
+          type: integer
+          description: ID of the work entry type (e.g., Regular Work, Overtime, etc.)
+          example: 1
+        approvalId:
+          type: integer
+          description: |
+            Optional approval ID required for certain work entry types.
+            Only needed if the work entry type requires approval.
+          example: 123
+
+    BenefitFactor:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          description: ID of the benefit (allowance or deduction)
+          example: 1
+        factor:
+          type: number
+          format: float
+          description: |
+            Multiplier factor to apply to the benefit amount.
+            Must be greater than 0. Defaults to 1.0 if not provided.
+          minimum: 0.01
+          default: 1.0
+          example: 1.5
+
+    WorkEntryBatchResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+          description: Response status
+          example: "success"
+        message:
+          type: object
+          properties:
+            employee_id:
+              type: integer
+              description: ID of the employee
+              example: 10000
+            entries:
+              type: array
+              description: Array of created work entries
+              items:
+                $ref: "#/components/schemas/WorkEntryResponse"
+
+    WorkEntryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the created work entry
+          example: 12345
+        date_start:
+          type: string
+          format: date-time
+          description: Start time in UTC
+          example: "2025-10-25 20:00:00"
+        date_stop:
+          type: string
+          format: date-time
+          description: End time in UTC
+          example: "2025-10-26 06:00:00"
+        work_entry_type_id:
+          type: integer
+          description: ID of the work entry type
+          example: 1
+        effective_date:
+          type: string
+          format: date
+          description: Effective date for reporting (if provided in request)
+          example: "2025-10-25"
+        benefits:
+          type: array
+          description: |
+            Array of benefit factors attached to this work entry.
+            Only present for the first work entry in the batch.
+          items:
+            $ref: "#/components/schemas/BenefitResponse"
+        total_allowances:
+          type: number
+          format: float
+          description: Total amount of allowances (only for first work entry)
+          example: 150.0
+        total_deductions:
+          type: number
+          format: float
+          description: Total amount of deductions (only for first work entry)
+          example: 200.0
+        net_benefit:
+          type: number
+          format: float
+          description: Net benefit amount (allowances - deductions) (only for first work entry)
+          example: -50.0
+
+    BenefitResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the benefit
+          example: 1
+        name:
+          type: string
+          description: Name of the benefit
+          example: "Overtime Allowance"
+        classification:
+          type: string
+          enum: [allowance, deduction]
+          description: Classification of the benefit
+          example: "allowance"
+        factor:
+          type: number
+          format: float
+          description: Factor applied to the benefit
+          example: 1.5
+        calculated_amount:
+          type: number
+          format: float
+          description: Final calculated amount after applying the factor
+          example: 150.0
+        employee_hours:
+          type: boolean
+          description: Whether this benefit is calculated based on employee hours
+          example: true
+        employee_hourly_rate:
+          type: number
+          format: float
+          description: Hourly rate for employee hours calculation (if applicable)
+          example: 25.0
+        base_amount:
+          type: number
+          format: float
+          description: Base amount before applying factor
+          example: 100.0
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+          description: Response status
+          example: "error"
+        message:
+          type: string
+          description: Error message describing what went wrong
+          example: "Missing employee_id"
+    Assignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Assignment 1
+        status:
+          type: string
+          example: active
+        start_date:
+          type: string
+          format: date-time
+          example: "2023-01-01 00:00:00"
+        end_date:
+          type: string
+          format: date-time
+          example: "2023-12-31 00:00:00"
+        project:
+          $ref: '#/components/schemas/ProjectShort'
+        task:
+          $ref: '#/components/schemas/TaskShort'
+        employee:
+          $ref: '#/components/schemas/EmployeeShort'
+        created_by:
+          type: string
+          example: Admin User
+        created_date:
+          type: string
+          format: date-time
+          example: "2023-01-01 00:00:00"
+
+    AssignmentInput:
+      type: object
+      required:
+        - start_date
+        - project_id
+        - task_id
+        - employee_id
+        - operational_id
+      properties:
+        start_date:
+          type: string
+          format: date-time
+          description: Start date of the assignment
+          example: "2023-01-01 00:00:00"
+        end_date:
+          type: string
+          format: date-time
+          description: End date of the assignment (optional)
+          example: "2023-12-31 00:00:00"
+        project_id:
+          type: integer
+          description: ID of the project
+          example: 1
+        task_id:
+          type: integer
+          description: ID of the task
+          example: 1
+        employee_id:
+          type: integer
+          description: ID of the employee
+          example: 1
+        operational_id:
+          type: integer
+          description: Operational ID for the assignment
+          example: 1001
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Project X
+        description:
+          type: string
+          example: A sample project
+        active:
+          type: boolean
+          example: true
+        task_count:
+          type: integer
+          example: 5
+        date_start:
+          type: string
+          format: date
+          example: "2023-01-01"
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskShort'
+
+    ProjectShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Project X
+        active:
+          type: boolean
+          example: true
+
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Task 1
+        active:
+          type: boolean
+          example: true
+        date_end:
+          type: string
+          format: date-time
+          example: "2023-12-31 00:00:00"
+        project:
+          $ref: '#/components/schemas/ProjectShort'
+        created_by:
+          type: string
+          example: Admin User
+        created_date:
+          type: string
+          format: date-time
+          example: "2023-01-01 00:00:00"
+
+    TaskShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Task 1
+        create_date:
+          type: string
+          format: date-time
+          example: "2023-01-01 00:00:00"
+        created_by:
+          type: string
+          example: Admin User
+
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Software Developer
+        no_of_employee:
+          type: integer
+          example: 5
+        employee_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeShort'
+        description:
+          type: string
+          example: Develops software applications
+
+    Department:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: IT
+        directory:
+          type: string
+          example: Company/IT
+        total_employee:
+          type: integer
+          example: 10
+        member_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeShort'
+
+    EmployeeShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: John Doe
+        department:
+          type: object
+          properties:
+            department_id:
+              type: integer
+              example: 1
+            department_name:
+              type: string
+              example: IT
+
+    WorkEntryType:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name: 
+          type: string
+          example: Attendance
+    
+    SalaryStructureType:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name: 
+          type: string
+          example: Employee
+
+    TimeOffType:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name: 
+          type: string
+          example: Paid Time Off
+
+    ShiftType:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Keeta
+
+    PayrollLookups:
+      type: object
+      properties:
+        work_entry:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkEntryType'
+        salary_structure:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalaryStructureType'
+        time_off:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOffType'
+        shift:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShiftType'
+
+    Schedule:
+      type: object
+      properties:
+        schedule_id:
+          type: integer
+          example: 11
+        start_datetime:
+          type: string
+          format: date-time
+          example: "2025-07-06 00:00:00"
+        end_datetime:
+          type: string
+          format: date-time
+          example: "2025-07-06 05:00:59"
+        project_id:
+          type: integer
+          example: 34
+        employee_id:
+          type: integer
+          example: 8815
+        shift_id:
+          type: integer
+          example: 1
+        note:
+          type: string
+          example: testing schedule
+
+    ScheduleInput:
+      type: object
+      properties:
+        hr_id:
+          type: integer
+          example: 4049
+        start_datetime:
+          type: string
+          format: date-time
+          example: "2025-07-06 00:00:00"
+        end_datetime:
+          type: string
+          format: date-time
+          example: "2025-07-06 05:00:59"
+        shift_id:
+          type: integer
+          example: 1
+        note:
+          type: string
+          example: testing schedule
+
+
+    Attendance:
+      type: object
+      properties:
+        attendance_id:
+          type: integer
+          example: 22
+        check_in:
+            type: string
+            format: date-time
+            example: "2025-06-05 07:14:00"
+        check_out:
+            type: string
+            format: date-time
+            example: "2025-06-05 12:14:15"
+        hr_id:
+          type: integer
+          example: 5436
+        worked_hours:
+          type: number
+          example: 4.77
+
+    AttendanceInput:
+      type: object
+      properties:
+        check_in:
+          type: string
+          format: date-time
+          example: "2025-06-03 07:14:00"
+        check_out:
+          type: string
+          format: date-time
+          example: "2025-06-03 12:14:15"
+        hr_id:
+          type: integer
+          example: 4536
+
+    Shift:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        shif_id:
+          type: integer
+          example: 16
+        message:
+          type: string
+          example: "Shift updated successfully"
+
+    ShiftInput:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Morning Shift79"
+        start_time:
+          type: string
+          description: Time in HH:mm:ss format
+          example: "09:00"
+        end_time:
+          type: string
+          description: Time in HH:mm:ss format
+          example: "17:00"
+        duration_days:
+          type: integer
+          example: 1
+        project_id:
+          type: integer
+          example: 1
+
