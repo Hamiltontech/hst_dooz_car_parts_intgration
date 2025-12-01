@@ -434,7 +434,7 @@ components:
           example: 10097
         parent_id:
           type: object
-          parameters:
+          properties:
             id:
               type: integer
               example: 95
