@@ -71,6 +71,13 @@ paths:
       description: Returns comprehensive list about all car product subcategories
       security:
         - bearerAuth: []
+      parameters:
+        - name: category_id
+          in: query
+          description: ID of the category you want to filter subcategories by
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
           description: Successful operation
