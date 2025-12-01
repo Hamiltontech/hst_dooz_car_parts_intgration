@@ -1,31 +1,43 @@
 openapi: 3.0.1
 info:
   title: Odoo CSMENA HR Integration API
-  description: API for accessing HR, Projects, Tasks, and Assignments data from Odoo
+  description: API for accessing Inventory Products data from Odoo
   version: 1.0.0
 servers:
-  - url: https://csmena-stage02-20189466.dev.odoo.com/
+  - url: https://hamiltontech-jopart-stage02-24870574.dev.odoo.com/
     description: staging server
-  - url: https://csmena.odoo.com
-    description: Production server
     
 tags:
-  - name: Employees
-    description: Operations related to employees
-  - name: Assignments
-    description: Operations related to employee assignments
-  - name: Projects
-    description: Operations related to projects
-  - name: Tasks
-    description: Operations related to tasks
-  - name: Departments
-    description: Operations related to departments
-  - name: Jobs
-    description: Operations related to job positions
-  - name: Payroll
-    description: Operations related to payroll & attendance.
+  - name: Products
+    description: Products related to cars
 
 paths:
+  /api/v1/cars:
+    get:
+      tags: [Products]
+      summary: Get detailed car model information
+      description: Returns comprehensive details about all car models
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  count:
+                    type: integer
+                    example: 500
+                  data:
+                    type: array
+                    items:
+                      $ref: ''
+
   /api/v1/employees/details:
     get:
       tags: [Employees]
@@ -48,320 +60,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/EmployeeDetails'
-
-  /api/v1/employees:
-    get:
-      tags: [Employees]
-      summary: Get employee information with active assignments
-      description: Returns employee information including their active assignments
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/EmployeeWithAssignments'
-
-  /api/v1/Assignments:
-    get:
-      tags: [Assignments]
-      summary: Get all assignments
-      description: Returns information about all assignments
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Assignment'
-
-  /api/v1/projects:
-    get:
-      tags: [Projects]
-      summary: Get all projects
-      description: Returns information about all projects including their tasks
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Project'
-
-  /api/v1/tasks:
-    get:
-      tags: [Tasks]
-      summary: Get all tasks
-      description: Returns information about all tasks
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Task'
-
-  /api/v1/jobs:
-    get:
-      tags: [Jobs]
-      summary: Get all job positions
-      description: Returns information about all job positions
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Job'
-
-  /api/v1/departments:
-    get:
-      tags: [Departments]
-      summary: Get all departments
-      description: Returns information about all departments
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Department'
-
-  /api/v1/assignment/create:
-    post:
-      tags: [Assignments]
-      summary: Create a new assignment
-      description: Creates a new employee assignment
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AssignmentInput'
-      responses:
-        '200':
-          description: Assignment created successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    $ref: '#/components/schemas/Assignment'
-        '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Assignment not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /api/v1/assignment/{assignment_id}/update:
-    put:
-      tags: [Assignments]
-      summary: Update an assignment
-      description: Updates an existing assignment
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: assignment_id
-          in: path
-          description: ID of the assignment to update
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AssignmentInput'
-      responses:
-        '200':
-          description: Assignment updated successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    $ref: '#/components/schemas/Assignment'
-        '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Assignment not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-                
-  /api/v1/payroll-lookups:
-    get:
-      tags: [Payroll]
-      summary: Lookup for payroll endpoint
-      description: Returns information about the payroll endpoints
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: type
-          in: query
-          description: type of the lookup values requested
-          required: true
-          schema:
-            type: string
-            # default: all
-            enum:
-              - work_entry
-              - allowance
-              - deduction
-              - salary_structure
-              - time_off
-              - shift
-              - all
-      responses:
-        '200':
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    $ref: '#/components/schemas/PayrollLookups'
-      
-  /api/v1/schedule/upsert:
-    post:
-      tags: [Payroll]
-      summary: Schedule a timeslot
-      description: Records a scheduled timeslot where an employee works on a project
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScheduleInput'
-      responses:
-        '200':
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    $ref: '#/components/schemas/Schedule'
-      
-  /api/v1/attendance/create:
-    post:
-      tags: [Payroll]
-      summary: Record the attendence of an employee
-      description: Creates a record of when an employee had checked-in & checked-out
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AttendanceInput'
-      responses:
-        '200':
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    $ref: '#/components/schemas/Attendance'
 
   /api/v1/work-entry/batch:
     post:
@@ -503,27 +201,6 @@ paths:
                     status: "error"
                     message: "Internal server error occurred"
   
-  /api/v1/shifts/upsert:
-    post:
-      tags: [Payroll]
-      summary: Create a shift
-      description: Creates a record of a shift for a project
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ShiftInput'
-      responses:
-        '200':
-          description: Successful Operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Shift"
-
 components:
   securitySchemes:
     bearerAuth:
@@ -532,6 +209,91 @@ components:
       description: Available authorizations - Bearer token
       
   schemas:
+    CarDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2499
+        name:
+          type: string
+          example: CHEVROLET Spark (China) 2003 - 2009
+        year_id:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 100
+            name:
+              type: string
+              example: 2003
+        end_year_id:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 106
+            name:
+              type: string
+              example: 2009
+        mmodel_id:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 3187
+            name:
+              type: string
+              example: Spark (China)
+        type_id:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 248
+            name:
+              type: string
+              example: 800 cc
+        make_id:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 102
+            name:
+              type: string
+              example: CHEVROLET
+        model_group:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1697
+            name:
+              type: string
+              example: Spark (China)
+        engine_code:
+          type: string
+          example: F8CV|F8CVC
+        no_cylinder:
+          type: integer
+          example:  3
+        body_style:
+          type: string
+          example:  hatchback
+        fuel_type:
+          type: string
+          example:  gasoline
+        drive_type:
+          type: string
+          example:  front_wheel
+        oil_capacity:
+          type: float
+          example: 3.0
+        ssn_number:
+          type: integer
+          example: 13109
+    
     EmployeeDetails:
       type: object
       properties:
