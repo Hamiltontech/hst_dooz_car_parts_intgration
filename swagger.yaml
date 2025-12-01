@@ -12,7 +12,7 @@ tags:
     description: Products related to cars
 
 paths:
-  /api/v1/cars:
+  api/v1/cars:
     get:
       tags: [Products]
       summary: Get detailed car model information
