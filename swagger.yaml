@@ -290,7 +290,7 @@ components:
           example: 14003
         name:
           type: string
-          example: [BAF/PBEB53] Peak Antifreeze Electric Vehicles (Blue) - 3.78 Liter
+          example: "[BAF/PBEB53] Peak Antifreeze Electric Vehicles (Blue) - 3.78 Liter"
         default_code:
           type: string
           example: BAF/PBEB53
