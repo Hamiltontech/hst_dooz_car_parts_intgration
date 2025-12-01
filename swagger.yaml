@@ -235,7 +235,7 @@ components:
           type: string
           example:  front_wheel
         oil_capacity:
-          type: float
+          type: number
           example: 3.0
         ssn_number:
           type: integer
@@ -298,7 +298,7 @@ components:
           type: boolean
           example: false
         list_price:
-          type: float
+          type: number
           example: 17.0
         currency:
           type: string
@@ -318,13 +318,13 @@ components:
           example: false
         features_benefits:
           type: string
-          example: Specially formulated for electric and hybrid vehicle cooling systems\nProvides excellent heat transfer and thermal stability\nPhosphate- and silicate-free formula to reduce deposits and corrosion\nOffers long-lasting protection for aluminum and metal components\nMaintains optimal battery and motor temperatures\nCompatible with a wide range of EVs and hybrid vehicles\nReady to use – no dilution required\nSize: 3.78 Liters
+          example: "Specially formulated for electric and hybrid vehicle cooling systems\nProvides excellent heat transfer and thermal stability\nPhosphate- and silicate-free formula to reduce deposits and corrosion\nOffers long-lasting protection for aluminum and metal components\nMaintains optimal battery and motor temperatures\nCompatible with a wide range of EVs and hybrid vehicles\nReady to use – no dilution required\nSize: 3.78 Liters"
         note:
           type: boolean
           example: false
         how_to_use:
           type: string
-          example: Make sure the vehicle is completely cool before opening the coolant reservoir.\nDrain any old coolant from the system if replacing.\nShake the bottle well before use.\nPour the coolant directly into the vehicle’s coolant reservoir or radiator.\nFill to the recommended level as per the vehicle manufacturer's instructions.\nStart the vehicle and run the cooling system to circulate the coolant.\nRecheck the level and top up if needed.\n\nNote: This product is pre-mixed and ready to use – do not dilute with water.\n
+          example: "Make sure the vehicle is completely cool before opening the coolant reservoir.\nDrain any old coolant from the system if replacing.\nShake the bottle well before use.\nPour the coolant directly into the vehicle’s coolant reservoir or radiator.\nFill to the recommended level as per the vehicle manufacturer's instructions.\nStart the vehicle and run the cooling system to circulate the coolant.\nRecheck the level and top up if needed.\n\nNote: This product is pre-mixed and ready to use – do not dilute with water.\n"
         active:
           type: boolean
           example: true
