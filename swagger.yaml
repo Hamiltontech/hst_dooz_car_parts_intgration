@@ -74,8 +74,8 @@ paths:
       parameters:
         - name: category_id
           in: query
-          description: ID of the category you want to filter subcategories by
-          required: false
+          description: ID of the category you want to see the subcategories of
+          required: true
           schema:
             type: integer
       responses:
@@ -96,6 +96,57 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Subcategory'
+
+  api/v1/products:
+    get:
+      tags: [Products]
+      summary: Get list of all car product subcategories
+      description: Returns comprehensive list about all car product subcategories
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: ssn_number
+          in: query
+          description: SSN of the car model you want to see the products of
+          required: true
+          schema:
+            type: integer
+        - name: category_id
+          in: query
+          description: ID of the category you want to filter products by
+          required: false
+          schema:
+            type: integer
+        - name: subcategory_id
+          in: query
+          description: ID of the subcategories you want to filter products by
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  count:
+                    type: integer
+                    example: 8
+                  car_name:
+                    type: string
+                    example: MERCEDES-BENZ E 200 CGI (W212) 2009 - 2015
+                  car_ssn_number:
+                    type: string
+                    example: 222
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
 
   /api/v1/employees/details:
     get:
@@ -393,6 +444,99 @@ components:
         product_count:
           type: integer
           example: 0
+    
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 14003
+        name:
+          type: string
+          example: [BAF/PBEB53] Peak Antifreeze Electric Vehicles (Blue) - 3.78 Liter
+        default_code:
+          type: string
+          example: BAF/PBEB53
+        barcode:
+          type: boolean
+          example: false
+        list_price:
+          type: float
+          example: 17.0
+        currency:
+          type: string
+          example: JOD
+        main_image:
+          type: string
+          example: https://hamiltontech-jopart-stage02-24870574.dev.odoo.com/web/image/product.product/14003/image_1920
+        extra_images:
+          type: array
+          items:
+            type: string
+        about_product:
+          type: string
+          example: Electric Vehicle Blue Antifreeze Coolant \nA high-performance, phosphate- and silicate-free blue coolant specially formulated for electric and hybrid vehicles. It offers excellent thermal stability, corrosion protection, and long-lasting performance. Compatible with aluminum and other metal components found in EV cooling systems, ensuring reliable temperature control and extended system life.
+        specifications:
+          type: boolean
+          example: false
+        features_benefits:
+          type: string
+          example: Specially formulated for electric and hybrid vehicle cooling systems\nProvides excellent heat transfer and thermal stability\nPhosphate- and silicate-free formula to reduce deposits and corrosion\nOffers long-lasting protection for aluminum and metal components\nMaintains optimal battery and motor temperatures\nCompatible with a wide range of EVs and hybrid vehicles\nReady to use – no dilution required\nSize: 3.78 Liters
+        note:
+          type: boolean
+          example: false
+        how_to_use:
+          type: string
+          example: Make sure the vehicle is completely cool before opening the coolant reservoir.\nDrain any old coolant from the system if replacing.\nShake the bottle well before use.\nPour the coolant directly into the vehicle’s coolant reservoir or radiator.\nFill to the recommended level as per the vehicle manufacturer's instructions.\nStart the vehicle and run the cooling system to circulate the coolant.\nRecheck the level and top up if needed.\n\nNote: This product is pre-mixed and ready to use – do not dilute with water.\n
+        active:
+          type: boolean
+          example: true
+        description:
+          type: boolean
+          example: false
+        description_sale:
+          type: boolean
+          example: false
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 702
+              name:
+                type: string
+                example: Chemicals
+              sequence:
+                type: integer
+                example: 10004
+              parent_id:
+                type: boolean
+                example: false
+        subcategories:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 711
+              name:
+                type: string
+                example: Peak
+              sequence:
+                type: integer
+                example: 10252
+              parent_id:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 704
+                  name:
+                    type: string
+                    example: Chemicals / Antifreeze
     
     EmployeeDetails:
       type: object
