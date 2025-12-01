@@ -38,6 +38,32 @@ paths:
                     items:
                       $ref: '#/components/schemas/CarDetails'
 
+  api/v1/categories:
+    get:
+      tags: [Products]
+      summary: Get list of all car product categories
+      description: Returns comprehensive list about all car product categories
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  count:
+                    type: integer
+                    example: 11
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+
   /api/v1/employees/details:
     get:
       tags: [Employees]
@@ -293,6 +319,22 @@ components:
         ssn_number:
           type: integer
           example: 13109
+    
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 95
+        name:
+          type: string
+          example: Accessories
+        sequence:
+          type: integer
+          example: 10000
+        product_count:
+          type: integer
+          example: 0
     
     EmployeeDetails:
       type: object
