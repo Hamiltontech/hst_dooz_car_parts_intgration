@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Odoo CSMENA HR Integration API
+  title: Odoo Dooz Car Parts Integration API
   description: API for accessing Inventory Products data from Odoo
   version: 1.0.0
 servers:
