@@ -64,6 +64,32 @@ paths:
                     items:
                       $ref: '#/components/schemas/Category'
 
+  api/v1/subcategories:
+    get:
+      tags: [Products]
+      summary: Get list of all car product subcategories
+      description: Returns comprehensive list about all car product subcategories
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  count:
+                    type: integer
+                    example: 8
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subcategory'
+
   /api/v1/employees/details:
     get:
       tags: [Employees]
@@ -332,6 +358,31 @@ components:
         sequence:
           type: integer
           example: 10000
+        product_count:
+          type: integer
+          example: 0
+    
+    Subcategory:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 214
+        name:
+          type: string
+          example: Universal Accessories
+        sequence:
+          type: integer
+          example: 10097
+        parent_id:
+          type: object
+          parameters:
+            id:
+              type: integer
+              example: 95
+            name:
+              type: string
+              example: Accessories
         product_count:
           type: integer
           example: 0
