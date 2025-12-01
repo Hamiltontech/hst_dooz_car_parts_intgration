@@ -4,7 +4,7 @@ info:
   description: API for accessing Inventory Products data from Odoo
   version: 1.0.0
 servers:
-  - url: https://hamiltontech-jopart-stage02-24870574.dev.odoo.com/
+  - url: https://hamiltontech-jopart-stage02-24870574.dev.odoo.com
     description: staging server
     
 tags:
@@ -12,7 +12,7 @@ tags:
     description: Products related to cars
 
 paths:
-  api/v1/cars:
+  /api/v1/cars:
     get:
       tags: [Products]
       summary: Get detailed car model information
@@ -38,7 +38,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/CarDetails'
 
-  api/v1/categories:
+  /api/v1/categories:
     get:
       tags: [Products]
       summary: Get list of all car product categories
@@ -64,7 +64,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Category'
 
-  api/v1/subcategories:
+  /api/v1/subcategories:
     get:
       tags: [Products]
       summary: Get list of all car product subcategories
@@ -97,7 +97,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Subcategory'
 
-  api/v1/products:
+  /api/v1/products:
     get:
       tags: [Products]
       summary: Get list of all car product subcategories
